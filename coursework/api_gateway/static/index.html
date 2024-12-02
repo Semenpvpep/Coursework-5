@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ahaha.ru</title>
+    <script>
+        async function createResume() {
+            const resume = {
+                candidate_name: document.getElementById('resumeName').value,
+                email: document.getElementById('resumeEmail').value,
+                phone: document.getElementById('resumePhone').value,
+                experience: document.getElementById('resumeExperience').value,
+                education: document.getElementById('resumeEducation').value
+            };
+
+            const response = await fetch('/resumes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(resume)
+            });
+
+            const result = await response.json();
+            alert('Создано резюме: ' + JSON.stringify(result));
+        }
+
+        async function getResume() {
+            const id = document.getElementById('getResumeId').value;
+            const response = await fetch(`/resumes/${id}`);
+            const result = await response.json();
+
+            const resumeDetails = document.getElementById('resumeDetails');
+            resumeDetails.innerHTML = ''; // Очистка предыдущих данных
+            if (result) {
+                resumeDetails.innerHTML = `
+            <h4>Резюме (ID: ${result.id})</h4>
+            <p><strong>Имя кандидата:</strong> ${result.candidate_name}</p>
+            <p><strong>Email:</strong> ${result.email}</p>
+            <p><strong>Телефон:</strong> ${result.phone}</p>
+            <p><strong>Опыт работы:</strong> ${result.experience}</p>
+            <p><strong>Образование:</strong> ${result.education}</p>
+        `;
+            } else {
+                resumeDetails.innerHTML = `<p>Резюме с ID ${id} не найдено.</p>`;
+            }
+        }
+
+        async function getAllResumes() {
+            const response = await fetch('/resumes');
+            const result = await response.json();
+            const resumesList = document.getElementById('resumesList');
+            resumesList.innerHTML = ''; // Очистка предыдущих данных
+            result.forEach(resume => {
+                const li = document.createElement('li');
+                li.textContent = `ID: ${resume.id}, Имя: ${resume.candidate_name}`;
+                resumesList.appendChild(li);
+            });
+        }
+
+        async function updateResume() {
+            const resume = {
+                id: document.getElementById('updateResumeId').value,
+                candidate_name: document.getElementById('updateResumeName').value,
+                email: document.getElementById('updateResumeEmail').value,
+                phone: document.getElementById('updateResumePhone').value,
+                experience: document.getElementById('updateResumeExperience').value,
+                education: document.getElementById('updateResumeEducation').value
+            };
+
+            const response = await fetch('/resumes', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(resume)
+            });
+
+            const result = await response.json();
+            alert('Обновлено резюме: ' + JSON.stringify(result));
+        }
+
+        async function deleteResume() {
+            const id = document.getElementById('deleteResumeId').value;
+            const response = await fetch(`/resumes/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('Резюме удалено');
+            } else {
+                alert('Ошибка при удалении резюме');
+            }
+        }
+
+        async function createVacancy() {
+            const vacancy = {
+                title: document.getElementById('vacancyTitle').value,
+                company: document.getElementById('vacancyCompany').value,
+                location: document.getElementById('vacancyLocation').value,
+                description: document.getElementById('vacancyDescription').value
+            };
+
+            const response = await fetch('/vacancies', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(vacancy)
+            });
+
+            const result = await response.json();
+            alert('Создана вакансия: ' + JSON.stringify(result));
+        }
+
+        async function getVacancy() {
+            const id = document.getElementById('getVacancyId').value;
+            const response = await fetch(`/vacancies/${id}`);
+            const result = await response.json();
+
+            const vacancyDetails = document.getElementById('vacancyDetails');
+            vacancyDetails.innerHTML = ''; // Очистка предыдущих данных
+            if (result) {
+                vacancyDetails.innerHTML = `
+            <h4>Вакансия (ID: ${result.id})</h4>
+            <p><strong>Название:</strong> ${result.title}</p>
+            <p><strong>Компания:</strong> ${result.company}</p>
+            <p><strong>Местоположение:</strong> ${result.location}</p>
+            <p><strong>Описание:</strong> ${result.description}</p>
+        `;
+            } else {
+                vacancyDetails.innerHTML = `<p>Вакансия с ID ${id} не найдена.</p>`;
+            }
+        }
+
+        async function getAllVacancies() {
+            const response = await fetch('/vacancies');
+            const result = await response.json();
+            const vacanciesList = document.getElementById('vacanciesList');
+            vacanciesList.innerHTML = ''; // Очистка предыдущих данных
+            result.forEach(vacancy => {
+                const li = document.createElement('li');
+                li.textContent = `ID: ${vacancy.id}, Название: ${vacancy.title}`;
+                vacanciesList.appendChild(li);
+            });
+        }
+
+        async function updateVacancy() {
+            const vacancy = {
+                id: document.getElementById('updateVacancyId').value,
+                title: document.getElementById('updateVacancyTitle').value,
+                company: document.getElementById('updateVacancyCompany').value,
+                location: document.getElementById('updateVacancyLocation').value,
+                description: document.getElementById('updateVacancyDescription').value
+            };
+
+            const response = await fetch('/vacancies', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(vacancy)
+            });
+
+            const result = await response.json();
+            alert('Обновлена вакансия: ' + JSON.stringify(result));
+        }
+
+        async function deleteVacancy() {
+            const id = document.getElementById('deleteVacancyId').value;
+            const response = await fetch(`/vacancies/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                alert('Вакансия удалена');
+            } else {
+                alert('Ошибка при удалении вакансии');
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Кадровое агенство ahaha.ru</h1>
+
+<h2>Резюме</h2>
+<h3>Создать резюме</h3>
+<input type="text" id="resumeName" placeholder="Имя кандидата">
+<input type="email" id="resumeEmail" placeholder="Email">
+<input type="text" id="resumePhone" placeholder="Телефон">
+<input type="text" id="resumeExperience" placeholder="Опыт работы">
+<input type="text" id="resumeEducation" placeholder="Образование">
+<button onclick="createResume()">Создать резюме</button>
+
+<h3>Получить резюме по ID</h3>
+<input type="number" id="getResumeId" placeholder="ID резюме">
+<button onclick="getResume()">Получить резюме</button>
+<div id="resumeDetails"></div>
+
+<h3>Получить все резюме</h3>
+<button onclick="getAllResumes()">Получить все резюме</button>
+<ul id="resumesList"></ul>
+
+<h3>Обновить резюме</h3>
+<input type="number" id="updateResumeId" placeholder="ID резюме">
+<input type="text" id="updateResumeName" placeholder="Имя кандидата">
+<input type="email" id="updateResumeEmail" placeholder="Email">
+<input type="text" id="updateResumePhone" placeholder="Телефон">
+<input type="text" id="updateResumeExperience" placeholder="Опыт работы">
+<input type="text" id="updateResumeEducation" placeholder="Образование">
+<button onclick="updateResume()">Обновить резюме</button>
+
+<h3>Удалить резюме</h3>
+<input type="number" id="deleteResumeId" placeholder="ID резюме">
+<button onclick="deleteResume()">Удалить резюме</button>
+
+<h2>Вакансии</h2>
+<h3>Создать вакансию</h3>
+<input type="text" id="vacancyTitle" placeholder="Название вакансии">
+<input type="text" id="vacancyCompany" placeholder="Компания">
+<input type="text" id="vacancyLocation" placeholder="Местоположение">
+<input type="text" id="vacancyDescription" placeholder="Описание">
+<button onclick="createVacancy()">Создать вакансию</button>
+
+<h3>Получить вакансию по ID</h3>
+<input type="number" id="getVacancyId" placeholder="ID вакансии">
+<button onclick="getVacancy()">Получить вакансию</button>
+<div id="vacancyDetails"></div>
+
+<h3>Получить все вакансии</h3>
+<button onclick="getAllVacancies()">Получить все вакансии</button>
+<ul id="vacanciesList"></ul>
+
+<h3>Обновить вакансию</h3>
+<input type="number" id="updateVacancyId" placeholder="ID вакансии">
+<input type="text" id="updateVacancyTitle" placeholder="Название вакансии">
+<input type="text" id="updateVacancyCompany" placeholder="Компания">
+<input type="text" id="updateVacancyLocation" placeholder="Местоположение">
+<input type="text" id="updateVacancyDescription" placeholder="Описание">
+<button onclick="updateVacancy()">Обновить вакансию</button>
+
+<h3>Удалить вакансию</h3>
+<input type="number" id="deleteVacancyId" placeholder="ID вакансии">
+<button onclick="deleteVacancy()">Удалить вакансию</button>
+</body>
+</html>

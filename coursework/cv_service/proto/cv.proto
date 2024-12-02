@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+option go_package = "./api/pb";
+
+// Сообщение для резюме
+message Resume {
+  int32 id = 1;                      // Уникальный идентификатор резюме
+  string candidate_name = 2;         // Имя кандидата
+  string email = 3;                  // Электронная почта кандидата
+  string phone = 4;                  // Телефон кандидата
+  string experience = 5;             // Опыт работы
+  string education = 6;              // Образование
+}
+
+// Сообщение для вакансии
+message Vacancy {
+  int32 id = 1;                      // Уникальный идентификатор вакансии
+  string title = 2;                  // Название вакансии
+  string company = 3;                // Название компании
+  string location = 4;               // Местоположение
+  string description = 5;            // Описание вакансии
+}
+
+// Запрос для создания резюме
+message CreateResumeRequest {
+  Resume resume = 1;                 // Резюме для создания
+}
+
+// Ответ на создание резюме
+message CreateResumeResponse {
+  Resume resume = 1;                 // Созданное резюме
+}
+
+// Запрос для получения резюме по ID
+message GetResumeRequest {
+  int32 id = 1;                      // Уникальный идентификатор резюме
+}
+
+// Ответ на получение резюме
+message GetResumeResponse {
+  Resume resume = 1;                 // Найденное резюме
+}
+
+// Запрос для обновления резюме
+message UpdateResumeRequest {
+  Resume resume = 1;                 // Резюме с обновленными данными
+}
+
+// Ответ на обновление резюме
+message UpdateResumeResponse {
+  Resume resume = 1;                 // Обновленное резюме
+}
+
+// Запрос для удаления резюме
+message DeleteResumeRequest {
+  int32 id = 1;                      // Уникальный идентификатор резюме для удаления
+}
+
+// Ответ на удаление резюме
+message DeleteResumeResponse {
+  bool success = 1;                  // Успешность удаления
+}
+
+// Запрос для создания вакансии
+message CreateVacancyRequest {
+  Vacancy vacancy = 1;               // Вакансия для создания
+}
+
+// Ответ на создание вакансии
+message CreateVacancyResponse {
+  Vacancy vacancy = 1;               // Созданная вакансия
+}
+
+// Запрос для получения вакансии по ID
+message GetVacancyRequest {
+  int32 id = 1;                      // Уникальный идентификатор вакансии
+}
+
+// Ответ на получение вакансии
+message GetVacancyResponse {
+  Vacancy vacancy = 1;               // Найденная вакансия
+}
+
+// Запрос для обновления вакансии
+message UpdateVacancyRequest {
+  Vacancy vacancy = 1;               // Вакансия с обновленными данными
+}
+
+// Ответ на обновление вакансии
+message UpdateVacancyResponse {
+  Vacancy vacancy = 1;               // Обновленная вакансия
+}
+
+// Запрос для удаления вакансии
+message DeleteVacancyRequest {
+  int32 id = 1;                      // Уникальный идентификатор вакансии для удаления
+}
+
+// Ответ на удаление вакансии
+message DeleteVacancyResponse {
+  bool success = 1;                  // Успешность удаления
+}
+
+// Запрос для получения всех резюме
+message GetAllResumesRequest {}
+
+// Ответ на получение всех резюме
+message GetAllResumesResponse {
+  repeated Resume resumes = 1;       // Список всех резюме
+}
+
+message GetAllVacanciesRequest {}
+
+// Ответ на получение всех вакансий
+message GetAllVacanciesResponse {
+  repeated Vacancy vacancies = 1;     // Список всех вакансий
+}
+
+// Сервис для управления резюме и вакансиями
+service RecruitmentService {
+  rpc CreateResume(CreateResumeRequest) returns (CreateResumeResponse);
+  rpc GetResume(GetResumeRequest) returns (GetResumeResponse);
+  rpc GetAllResumes(GetAllResumesRequest) returns (GetAllResumesResponse);
+  rpc UpdateResume(UpdateResumeRequest) returns (UpdateResumeResponse);
+  rpc DeleteResume(DeleteResumeRequest) returns (DeleteResumeResponse);
+
+  rpc CreateVacancy(CreateVacancyRequest) returns (CreateVacancyResponse);
+  rpc GetVacancy(GetVacancyRequest) returns (GetVacancyResponse);
+  rpc GetAllVacancies(GetAllVacanciesRequest) returns (GetAllVacanciesResponse);
+  rpc UpdateVacancy(UpdateVacancyRequest) returns (UpdateVacancyResponse);
+  rpc DeleteVacancy(DeleteVacancyRequest) returns (DeleteVacancyResponse);
+}
